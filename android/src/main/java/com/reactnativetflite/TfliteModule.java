@@ -10,24 +10,29 @@ import com.facebook.react.module.annotations.ReactModule;
 
 @ReactModule(name = TfliteModule.NAME)
 public class TfliteModule extends ReactContextBaseJavaModule {
-    public static final String NAME = "Tflite";
+  public static final String NAME = "Tflite";
 
-    public TfliteModule(ReactApplicationContext reactContext) {
-        super(reactContext);
-    }
+  public TfliteModule(ReactApplicationContext reactContext) {
+    super(reactContext);
+  }
 
-    @Override
-    @NonNull
-    public String getName() {
-        return NAME;
-    }
+  @Override
+  @NonNull
+  public String getName() {
+    return NAME;
+  }
 
 
-    // Example method
-    // See https://reactnative.dev/docs/native-modules-android
-    @ReactMethod
-    public void multiply(double a, double b, Promise promise) {
-        promise.resolve(a * b);
-    }
+  // Example method
+  // See https://reactnative.dev/docs/native-modules-android
+  @ReactMethod
+  public void initTensor(String modelName, String modelLabel, int count, Promise promise) {
+    promise.resolve(count);
+  }
+
+  @ReactMethod
+  public void tensorImage(String imagePath, Promise promise) {
+    promise.resolve(imagePath);
+  }
 
 }

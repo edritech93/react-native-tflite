@@ -1,32 +1,65 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Platform, Button } from 'react-native';
+import {
+  ImageLibraryOptions,
+  launchImageLibrary,
+} from 'react-native-image-picker';
+import { PERMISSIONS, request } from 'react-native-permissions';
 import { initTensor, tensorImage } from 'react-native-tflite';
-
-// enum MobileNet {
-//   static let modelInfo: FileInfo = (name: "mobile_face_net", extension: "tflite")
-//   static let labelsInfo: FileInfo = (name: "labelmap", extension: "txt")
-// }
 
 export default function App() {
   const [result, setResult] = React.useState<string | undefined>();
 
-  // React.useEffect(() => {
-  //   tensorImage('image path here...').then(setResult);
-  // }, []);
+  React.useEffect(() => {
+    initTensor('mobile_face_net', 'labelmap')
+      .then((response) => {
+        console.log('success initTensor => ', response);
+      })
+      .catch((error) => {
+        console.log('error initTensor => ', error);
+      });
+  }, []);
 
   React.useEffect(() => {
-    console.log('start init')
-    initTensor("mobile_face_net", 'labelmap').then(response => {
-      console.log('initTensor => ', response)
-    })
-    .catch(error => {
-      console.log('initTensor => ', error)
-    })
+    if (Platform.OS === 'ios') {
+      request(PERMISSIONS.IOS.PHOTO_LIBRARY)
+        .then(() => {})
+        .catch(() => {});
+    } else if (Platform.OS === 'android') {
+      request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE)
+        .then(() => {})
+        .catch(() => {});
+    }
   }, []);
+
+  const _onPressPick = async () => {
+    const options: ImageLibraryOptions = {
+      mediaType: 'photo',
+    };
+    const result = await launchImageLibrary(options);
+    if (
+      result &&
+      result.assets &&
+      result.assets.length > 0 &&
+      result.assets[0]?.uri
+    ) {
+      const imageUri = result.assets[0]?.uri.substring(7);
+      console.log('imageUri => ', imageUri);
+      tensorImage(imageUri || '')
+        .then((response) => {
+          console.log('success tensorImage =>', response);
+          setResult(response);
+        })
+        .catch((error) => {
+          console.log('error tensorImage =>', error);
+        });
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text numberOfLines={20}>Result: {result}</Text>
+      <Button title={'Pick Here'} onPress={_onPressPick} />
     </View>
   );
 }
@@ -36,6 +69,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'cyan'
+    backgroundColor: 'cyan',
+    padding: 16,
   },
 });

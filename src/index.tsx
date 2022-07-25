@@ -6,7 +6,9 @@ const MSG_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo managed workflow\n';
 
-const Tflite = NativeModules.Tflite  ? NativeModules.Tflite  : new Proxy(
+const Tflite = NativeModules.Tflite
+  ? NativeModules.Tflite
+  : new Proxy(
       {},
       {
         get() {
@@ -15,10 +17,14 @@ const Tflite = NativeModules.Tflite  ? NativeModules.Tflite  : new Proxy(
       }
     );
 
-export function initTensor(modelName: string, modelLabel: string, count: number = 1): Promise<number> {
+export function initTensor(
+  modelName: string,
+  modelLabel: string,
+  count: number = 1
+): Promise<any> {
   return Tflite.initTensor(modelName, modelLabel, count);
 }
 
-export function tensorImage(imagePath: string): Promise<number> {
+export function tensorImage(imagePath: string): Promise<any> {
   return Tflite.tensorImage(imagePath);
 }

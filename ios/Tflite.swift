@@ -75,7 +75,12 @@ class Tflite: NSObject {
             try interpreter?.invoke()
             // Get the output `Tensor` to process the inference results.
             let outputTensor: Tensor? = try interpreter?.output(at: 0)
-            resolve(outputTensor)
+            if ((outputTensor?.data) != nil) {
+                let result: [Float] = [Float32](unsafeData: outputTensor!.data) ?? []
+                resolve(result)
+            } else {
+                resolve([])
+            }
         } catch let error {
             reject("Failed to invoke the interpreter with error: \(error.localizedDescription)", nil, nil)
         }
