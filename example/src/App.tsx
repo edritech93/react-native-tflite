@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { tensorImage } from 'react-native-tensorflow-lite';
+import { initTensor, tensorImage } from 'react-native-tflite';
 
 // enum MobileNet {
 //   static let modelInfo: FileInfo = (name: "mobile_face_net", extension: "tflite")
@@ -10,8 +10,18 @@ import { tensorImage } from 'react-native-tensorflow-lite';
 export default function App() {
   const [result, setResult] = React.useState<string | undefined>();
 
+  // React.useEffect(() => {
+  //   tensorImage('image path here...').then(setResult);
+  // }, []);
+
   React.useEffect(() => {
-    tensorImage('image path here...').then(setResult);
+    console.log('start init')
+    initTensor("mobile_face_net", 'labelmap').then(response => {
+      console.log('initTensor => ', response)
+    })
+    .catch(error => {
+      console.log('initTensor => ', error)
+    })
   }, []);
 
   return (
@@ -26,6 +36,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white'
+    backgroundColor: 'cyan'
   },
 });

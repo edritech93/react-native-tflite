@@ -1,6 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 
-const LINKING_ERROR =
+const MSG_ERROR =
   `The package 'react-native-tflite' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
   '- You rebuilt the app after installing the package\n' +
@@ -10,11 +10,15 @@ const Tflite = NativeModules.Tflite  ? NativeModules.Tflite  : new Proxy(
       {},
       {
         get() {
-          throw new Error(LINKING_ERROR);
+          throw new Error(MSG_ERROR);
         },
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return Tflite.multiply(a, b);
+export function initTensor(modelName: string, modelLabel: string, count: number = 1): Promise<number> {
+  return Tflite.initTensor(modelName, modelLabel, count);
+}
+
+export function tensorImage(imagePath: string): Promise<number> {
+  return Tflite.tensorImage(imagePath);
 }
