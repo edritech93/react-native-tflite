@@ -13,8 +13,8 @@ var interpreter: Interpreter? = nil
 @objc(Tflite)
 class Tflite: NSObject {
 
-    @objc(initTensor:withModelLabel:withCount:withResolver:withRejecter:)
-    func initTensor(modelName: String, modelLabel: String, count: Int = 1, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
+    @objc(initTensor:withCount:withResolver:withRejecter:)
+    func initTensor(modelName: String, count: Int = 1, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
         // Construct the path to the model file.
         guard let modelPath = Bundle.main.path(
             forResource: modelName,

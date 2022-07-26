@@ -3,7 +3,6 @@
 @interface RCT_EXTERN_MODULE(Tflite, NSObject)
 
 RCT_EXTERN_METHOD(initTensor:(NSString)modelName
-                  withModelLabel:(NSString)modelLabel
                   withCount:(NSNumber)count
                   withResolver:(RCTPromiseResolveBlock)resolve
                   withRejecter:(RCTPromiseRejectBlock)reject)

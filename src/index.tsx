@@ -17,12 +17,8 @@ const Tflite = NativeModules.Tflite
       }
     );
 
-export function initTensor(
-  modelName: string,
-  modelLabel: string,
-  count: number = 1
-): Promise<any> {
-  return Tflite.initTensor(modelName, modelLabel, count);
+export function initTensor(modelName: string, count: number = 1): Promise<any> {
+  return Tflite.initTensor(modelName, count);
 }
 
 export function tensorImage(imagePath: string): Promise<any> {

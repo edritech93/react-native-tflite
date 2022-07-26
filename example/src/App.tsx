@@ -8,10 +8,10 @@ import { PERMISSIONS, request } from 'react-native-permissions';
 import { initTensor, tensorImage } from 'react-native-tflite';
 
 export default function App() {
-  const [result, setResult] = React.useState<string | undefined>();
+  const [arrayTensor, setArrayTensor] = React.useState<string | undefined>();
 
   React.useEffect(() => {
-    initTensor('mobile_face_net', 'labelmap')
+    initTensor('mobile_face_net')
       .then((response) => {
         console.log('success initTensor => ', response);
       })
@@ -48,7 +48,7 @@ export default function App() {
       tensorImage(imageUri || '')
         .then((response) => {
           console.log('success tensorImage =>', response);
-          setResult(response);
+          setArrayTensor(response);
         })
         .catch((error) => {
           console.log('error tensorImage =>', error);
@@ -58,7 +58,10 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text numberOfLines={20}>Result: {result}</Text>
+      <Text
+        style={styles.textResult}
+        numberOfLines={20}
+      >{`Result: ${arrayTensor}`}</Text>
       <Button title={'Pick Here'} onPress={_onPressPick} />
     </View>
   );
@@ -71,5 +74,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'cyan',
     padding: 16,
+  },
+  textResult: {
+    color: 'black',
   },
 });
