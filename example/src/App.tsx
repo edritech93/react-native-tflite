@@ -5,9 +5,10 @@ import {
   Camera,
   useFrameProcessor,
 } from 'react-native-vision-camera';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { initTensor, tensorImage } from 'react-native-tflite';
 import { getPermissionCamera, getPermissionReadStorage } from './permission';
+import { initTensor, tensorFrame, tensorImage } from 'react-native-tflite';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { runOnJS } from 'react-native-reanimated';
 
 export default function App() {
   const devices = useCameraDevices('wide-angle-camera');
@@ -60,13 +61,16 @@ export default function App() {
     setIsCamera(true);
   };
 
-  const frameProcessor = useFrameProcessor((frame) => {
+  const frameProcessor = useFrameProcessor(async (frame) => {
     'worklet';
-    // const scannedFaces = scanFaces(frame);
-    // runOnJS(setFaces)(scannedFaces);
-
-    console.log('frame => ', frame);
+    runOnJS(_getDataTensor)(frame);
   }, []);
+
+  async function _getDataTensor(frame: any) {
+    console.log(frame);
+    const result = await tensorFrame('frame');
+    console.log(new Date().toISOString(), result);
+  }
 
   return (
     <View style={styles.container}>

@@ -25,6 +25,6 @@ export function tensorImage(imagePath: string): Promise<any> {
   return Tflite.tensorImage(imagePath);
 }
 
-export function tensorFrame(frameImage: string): Promise<any> {
+export function tensorFrame(frameImage: any): Promise<any> {
   return Tflite.tensorFrame(frameImage);
 }

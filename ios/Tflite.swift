@@ -69,8 +69,11 @@ class Tflite: NSObject {
         } catch let error {
             reject("Failed to invoke the interpreter with error: \(error.localizedDescription)", nil, nil)
         }
-
     }
+
+    //  guard let imageBuffer = CMSampleBufferGetImageBuffer(frame.buffer) else {
+    //         return nil
+    //     }
 
     private func rgbDataFromBuffer(
         _ buffer: CVPixelBuffer,

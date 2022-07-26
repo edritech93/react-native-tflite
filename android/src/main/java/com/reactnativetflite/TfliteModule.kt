@@ -2,10 +2,7 @@ package com.reactnativetflite
 
 import android.content.res.AssetManager
 import android.graphics.BitmapFactory
-import com.facebook.react.bridge.Promise
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.bridge.*
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
 import java.io.IOException
@@ -55,7 +52,7 @@ class TfliteModule(reactContext: ReactApplicationContext) :
     try {
       val bitmap = BitmapFactory.decodeFile(imagePath)
       val input: ByteBuffer = Convert().convertBitmapToBuffer(bitmap)
-      val output: FloatBuffer = FloatBuffer.allocate(192);
+      val output: FloatBuffer = FloatBuffer.allocate(192)
       interpreter.run(input, output)
       promise.resolve(output.array().contentToString())
     } catch (e: Exception) {
@@ -66,17 +63,22 @@ class TfliteModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun tensorFrame(imagePath: String?, promise: Promise) {
-    try {
-      val bitmap = BitmapFactory.decodeFile(imagePath)
-      val input: ByteBuffer = Convert().convertBitmapToBuffer(bitmap)
-      val output: FloatBuffer = FloatBuffer.allocate(192);
-      interpreter.run(input, output)
-      promise.resolve(output.array().contentToString())
-    } catch (e: Exception) {
-      e.printStackTrace()
-      promise.reject(Throwable(e))
-      return
-    }
+  fun tensorFrame(imageFrame: String?, promise: Promise) {
+    promise.resolve("123qwe")
+//    try {
+//      val buffer: ByteBuffer = imageFrame.planes[0].buffer
+//      val bytes = ByteArray(buffer.capacity())
+//      buffer[bytes]
+//      val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, null)
+//
+//      val input: ByteBuffer = Convert().convertBitmapToBuffer(bitmap)
+//      val output: FloatBuffer = FloatBuffer.allocate(192)
+//      interpreter.run(input, output)
+//      promise.resolve(output.array().contentToString())
+//    } catch (e: Exception) {
+//      e.printStackTrace()
+//      promise.reject(Throwable(e))
+//      return
+//    }
   }
 }
