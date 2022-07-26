@@ -7,9 +7,6 @@ let inputChannels = 3
 let inputWidth = 112
 let inputHeight = 112
 
-// List of labels from the given labels file.
-var labels: [String] = []
-
 // TensorFlow Lite `Interpreter` object for performing inference on a given model.
 var interpreter: Interpreter? = nil
 
@@ -34,23 +31,11 @@ class Tflite: NSObject {
             interpreter = try Interpreter(modelPath: modelPath, options: options)
             // Allocate memory for the model's input `Tensor`s.
             try interpreter?.allocateTensors()
-        } catch let error {
-            print("Failed to create the interpreter with error: \(error.localizedDescription)")
-            return
-        }
-        // Load the classes listed in the labels file.
-        guard let fileURL = Bundle.main.url(forResource: modelLabel, withExtension: "txt") else {
-            fatalError("Labels file not found in bundle. Please add a labels file with name " +
-                       "\(modelLabel).txt and try again.")
-        }
-        do {
-            let contents = try String(contentsOf: fileURL, encoding: .utf8)
-            labels = contents.components(separatedBy: .newlines)
             resolve("initialization tflite success")
         } catch let error {
+            print("Failed to create the interpreter with error: \(error.localizedDescription)")
             reject("Error", "tflite error", error)
-            fatalError("Labels file named \(modelLabel).txt cannot be read. Please add a " +
-                       "valid labels file and try again.")
+            return
         }
     }
 
