@@ -13,8 +13,6 @@ import java.nio.ByteBuffer
 import java.nio.FloatBuffer
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
-import java.util.*
-
 
 class TfliteModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
@@ -67,15 +65,18 @@ class TfliteModule(reactContext: ReactApplicationContext) :
     }
   }
 
-  fun doSomething() {
-    val array = arrayOfNulls<Float>(2)
-    array[0] = 0.0f
-    array[1] = 1.2f
-    someMethod(array)
-  }
-
-  fun someMethod(value: Any) {
-    val list: List<Float> = ArrayList(Arrays.asList(*value as Array<Float?>))
-    println(list)
+  @ReactMethod
+  fun tensorFrame(imagePath: String?, promise: Promise) {
+    try {
+      val bitmap = BitmapFactory.decodeFile(imagePath)
+      val input: ByteBuffer = Convert().convertBitmapToBuffer(bitmap)
+      val output: FloatBuffer = FloatBuffer.allocate(192);
+      interpreter.run(input, output)
+      promise.resolve(output.array().contentToString())
+    } catch (e: Exception) {
+      e.printStackTrace()
+      promise.reject(Throwable(e))
+      return
+    }
   }
 }

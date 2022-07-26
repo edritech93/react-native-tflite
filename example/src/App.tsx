@@ -1,16 +1,22 @@
-import * as React from 'react';
-import { StyleSheet, View, Text, Platform, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import {
-  ImageLibraryOptions,
-  launchImageLibrary,
-} from 'react-native-image-picker';
-import { PERMISSIONS, request } from 'react-native-permissions';
+  useCameraDevices,
+  Camera,
+  useFrameProcessor,
+} from 'react-native-vision-camera';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { initTensor, tensorImage } from 'react-native-tflite';
+import { getPermissionCamera, getPermissionReadStorage } from './permission';
 
 export default function App() {
-  const [arrayTensor, setArrayTensor] = React.useState<string | undefined>();
+  const devices = useCameraDevices('wide-angle-camera');
+  const device = devices.front;
 
-  React.useEffect(() => {
+  const [arrayTensor, setArrayTensor] = useState([]);
+  const [isCamera, setIsCamera] = useState(false);
+
+  useEffect(() => {
     initTensor('mobile_face_net')
       .then((response) => {
         console.log('success initTensor => ', response);
@@ -20,23 +26,13 @@ export default function App() {
       });
   }, []);
 
-  React.useEffect(() => {
-    if (Platform.OS === 'ios') {
-      request(PERMISSIONS.IOS.PHOTO_LIBRARY)
-        .then(() => {})
-        .catch(() => {});
-    } else if (Platform.OS === 'android') {
-      request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE)
-        .then(() => {})
-        .catch(() => {});
-    }
-  }, []);
-
-  const _onPressPick = async () => {
-    const options: ImageLibraryOptions = {
-      mediaType: 'photo',
-    };
-    const result = await launchImageLibrary(options);
+  const _onOpenImage = async () => {
+    setIsCamera(false);
+    await getPermissionReadStorage().catch((error: Error) => {
+      console.log(error);
+      return;
+    });
+    const result = await launchImageLibrary({ mediaType: 'photo' });
     if (
       result &&
       result.assets &&
@@ -56,13 +52,44 @@ export default function App() {
     }
   };
 
+  const _onOpenCamera = async () => {
+    await getPermissionCamera().catch((error: Error) => {
+      console.log(error);
+      return;
+    });
+    setIsCamera(true);
+  };
+
+  const frameProcessor = useFrameProcessor((frame) => {
+    'worklet';
+    // const scannedFaces = scanFaces(frame);
+    // runOnJS(setFaces)(scannedFaces);
+
+    console.log('frame => ', frame);
+  }, []);
+
   return (
     <View style={styles.container}>
+      {device ? (
+        <Camera
+          style={styles.wrapCamera}
+          device={device}
+          isActive={isCamera}
+          frameProcessorFps={5}
+          frameProcessor={frameProcessor}
+        />
+      ) : (
+        <View style={styles.wrapCamera} />
+      )}
       <Text
         style={styles.textResult}
-        numberOfLines={20}
+        numberOfLines={1}
       >{`Result: ${arrayTensor}`}</Text>
-      <Button title={'Pick Here'} onPress={_onPressPick} />
+      <View style={styles.wrapBottom}>
+        <Button title={'Open Image'} onPress={_onOpenImage} />
+        <Button title={'Open Camera'} onPress={_onOpenCamera} />
+        <Button title={'Close Camera'} onPress={() => setIsCamera(false)} />
+      </View>
     </View>
   );
 }
@@ -70,12 +97,17 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'cyan',
-    padding: 16,
+    backgroundColor: 'white',
+  },
+  wrapCamera: {
+    flex: 1,
   },
   textResult: {
     color: 'black',
+  },
+  wrapBottom: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 16,
   },
 });

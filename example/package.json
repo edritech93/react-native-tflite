@@ -7,14 +7,15 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "pods": "pod-install --quiet",
-    "postinstall": "patch-package"
+    "pods": "pod-install --quiet"
   },
   "dependencies": {
     "react": "17.0.2",
     "react-native": "0.68.2",
     "react-native-image-picker": "^4.8.4",
-    "react-native-permissions": "^3.6.0"
+    "react-native-permissions": "^3.6.0",
+    "react-native-reanimated": "^2.9.1",
+    "react-native-vision-camera": "^2.14.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

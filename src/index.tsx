@@ -24,3 +24,7 @@ export function initTensor(modelName: string, count: number = 1): Promise<any> {
 export function tensorImage(imagePath: string): Promise<any> {
   return Tflite.tensorImage(imagePath);
 }
+
+export function tensorFrame(frameImage: string): Promise<any> {
+  return Tflite.tensorFrame(frameImage);
+}

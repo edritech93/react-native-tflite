@@ -35,8 +35,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Reason permission</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This is required to access files for Attachment uploads.</string>
+	<string>Reason permission</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
