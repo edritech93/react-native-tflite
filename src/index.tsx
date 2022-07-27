@@ -1,30 +1,45 @@
-import { NativeModules, Platform } from 'react-native';
+// import type { Frame } from 'react-native-vision-camera';
 
-const MSG_ERROR =
-  `The package 'react-native-tflite' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo managed workflow\n';
+/**
+ * Scans Faces.
+ */
 
-const Tflite = NativeModules.Tflite
-  ? NativeModules.Tflite
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(MSG_ERROR);
-        },
-      }
-    );
+// type Point = { x: number; y: number };
+// export interface Face {
+//   leftEyeOpenProbability: number;
+//   rollAngle: number;
+//   pitchAngle: number;
+//   yawAngle: number;
+//   rightEyeOpenProbability: number;
+//   smilingProbability: number;
+//   bounds: {
+//     y: number;
+//     x: number;
+//     height: number;
+//     width: number;
+//   };
+//   contours: {
+//     FACE: Point[];
+//     NOSE_BOTTOM: Point[];
+//     LOWER_LIP_TOP: Point[];
+//     RIGHT_EYEBROW_BOTTOM: Point[];
+//     LOWER_LIP_BOTTOM: Point[];
+//     NOSE_BRIDGE: Point[];
+//     RIGHT_CHEEK: Point[];
+//     RIGHT_EYEBROW_TOP: Point[];
+//     LEFT_EYEBROW_TOP: Point[];
+//     UPPER_LIP_BOTTOM: Point[];
+//     LEFT_EYEBROW_BOTTOM: Point[];
+//     UPPER_LIP_TOP: Point[];
+//     LEFT_EYE: Point[];
+//     RIGHT_EYE: Point[];
+//     LEFT_CHEEK: Point[];
+//   };
+// }
 
-export function initTensor(modelName: string, count: number = 1): Promise<any> {
-  return Tflite.initTensor(modelName, count);
-}
+export function tflite(frame: any): any {
+  'worklet';
+  // @ts-ignore
 
-export function tensorImage(imagePath: string): Promise<any> {
-  return Tflite.tensorImage(imagePath);
-}
-
-export function tensorFrame(frameImage: any): Promise<any> {
-  return Tflite.tensorFrame(frameImage);
+  return __tflite(frame);
 }

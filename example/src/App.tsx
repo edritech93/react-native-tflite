@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
 import {
   useCameraDevices,
@@ -6,7 +6,7 @@ import {
   useFrameProcessor,
 } from 'react-native-vision-camera';
 import { getPermissionCamera, getPermissionReadStorage } from './permission';
-import { initTensor, tensorFrame, tensorImage } from 'react-native-tflite';
+import { tflite } from 'react-native-tflite';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { runOnJS } from 'react-native-reanimated';
 
@@ -15,17 +15,7 @@ export default function App() {
   const device = devices.front;
 
   const [arrayTensor, setArrayTensor] = useState([]);
-  const [isCamera, setIsCamera] = useState(false);
-
-  useEffect(() => {
-    initTensor('mobile_face_net')
-      .then((response) => {
-        console.log('success initTensor => ', response);
-      })
-      .catch((error) => {
-        console.log('error initTensor => ', error);
-      });
-  }, []);
+  const [isCamera, setIsCamera] = useState(true);
 
   const _onOpenImage = async () => {
     setIsCamera(false);
@@ -42,14 +32,14 @@ export default function App() {
     ) {
       const imageUri = result.assets[0]?.uri.substring(7);
       console.log('imageUri => ', imageUri);
-      tensorImage(imageUri || '')
-        .then((response) => {
-          console.log('success tensorImage =>', response);
-          setArrayTensor(response);
-        })
-        .catch((error) => {
-          console.log('error tensorImage =>', error);
-        });
+      // tensorImage(imageUri || '')
+      //   .then((response) => {
+      //     console.log('success tensorImage =>', response);
+      //     setArrayTensor(response);
+      //   })
+      //   .catch((error) => {
+      //     console.log('error tensorImage =>', error);
+      //   });
     }
   };
 
@@ -61,16 +51,11 @@ export default function App() {
     setIsCamera(true);
   };
 
-  const frameProcessor = useFrameProcessor(async (frame) => {
+  const frameProcessor = useFrameProcessor((frame) => {
     'worklet';
-    runOnJS(_getDataTensor)(frame);
+    const result = tflite(frame);
+    runOnJS(setArrayTensor)(result);
   }, []);
-
-  async function _getDataTensor(frame: any) {
-    console.log(frame);
-    const result = await tensorFrame('frame');
-    console.log(new Date().toISOString(), result);
-  }
 
   return (
     <View style={styles.container}>
@@ -79,7 +64,6 @@ export default function App() {
           style={styles.wrapCamera}
           device={device}
           isActive={isCamera}
-          frameProcessorFps={5}
           frameProcessor={frameProcessor}
         />
       ) : (
