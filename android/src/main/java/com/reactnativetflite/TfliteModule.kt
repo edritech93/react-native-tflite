@@ -39,7 +39,7 @@ class TfliteModule(private val reactContext: ReactApplicationContext) :
   fun tensorImage(imagePath: String?, promise: Promise) {
     try {
       val bitmap = BitmapFactory.decodeFile(imagePath)
-      val input: ByteBuffer = Convert().convertBitmapToBuffer(bitmap)
+      val input: ByteBuffer = Convert().bitmap2ByteBuffer(bitmap)
       val output: FloatBuffer = FloatBuffer.allocate(192)
       interpreter?.run(input, output)
       promise.resolve(output.array().contentToString())

@@ -1,8 +1,6 @@
 package com.reactnativetflite
 
 import android.annotation.SuppressLint
-import android.graphics.BitmapFactory
-import android.media.Image
 import androidx.camera.core.ImageProxy
 import com.facebook.react.bridge.WritableNativeMap
 import com.mrousavy.camera.frameprocessor.FrameProcessorPlugin
@@ -13,13 +11,10 @@ class TflitePlugin(name: String) : FrameProcessorPlugin(name) {
 
   @SuppressLint("UnsafeOptInUsageError")
   override fun callback(image: ImageProxy, params: Array<Any>): Any? {
-    val mediaImage: Image? = image.image
-    if (mediaImage != null) {
-      val buffer = mediaImage.planes[0].buffer
-      val bytes = ByteArray(buffer.capacity())
-      buffer[bytes]
-      val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, null)
-      val input: ByteBuffer = Convert().convertBitmapToBuffer(bitmap)
+    val byteArray = Convert().imageProxy2ByteArray(image)
+    if (byteArray != null)  {
+      val bitmap = Convert().byteArray2Bitmap(byteArray)
+      val input: ByteBuffer = Convert().bitmap2ByteBuffer(bitmap)
       val output: FloatBuffer = FloatBuffer.allocate(192)
       interpreter?.run(input, output)
       val map = WritableNativeMap()
