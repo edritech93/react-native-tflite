@@ -57,7 +57,7 @@ export default function App() {
   const frameProcessor = useFrameProcessor((frame) => {
     'worklet';
     const result = tflite(frame);
-    runOnJS(setArrayTensor)(result);
+    runOnJS(setArrayTensor)(result?.data);
   }, []);
 
   return (
