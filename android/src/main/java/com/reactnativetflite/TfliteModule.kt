@@ -2,7 +2,6 @@ package com.reactnativetflite
 
 import android.content.res.AssetManager
 import android.graphics.BitmapFactory
-import android.util.Log
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -21,18 +20,18 @@ class TfliteModule(private val reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
 
   @ReactMethod
-  private fun initTensor(modelFile: String = "mobile_face_net", count: Int = 1) {
+  private fun initTensor(modelFile: String = "mobile_face_net", count: Int = 1, promise: Promise) {
     try {
       val assetManager = reactContext.assets
       val byteFile: MappedByteBuffer = loadModelFile(assetManager, modelFile)
       val options = Interpreter.Options()
       options.numThreads = count
-      val helper = Helper()
-      helper.interpreter = Interpreter(byteFile, options)
-      helper.interpreter?.allocateTensors()
-      Log.e(NAME, "initialization tflite success")
+      interpreter = Interpreter(byteFile, options)
+      interpreter?.allocateTensors()
+      promise.resolve("initialization tflite success")
     } catch (e: Exception) {
       e.printStackTrace()
+      promise.reject(Throwable(e))
     }
   }
 
@@ -42,8 +41,7 @@ class TfliteModule(private val reactContext: ReactApplicationContext) :
       val bitmap = BitmapFactory.decodeFile(imagePath)
       val input: ByteBuffer = Convert().convertBitmapToBuffer(bitmap)
       val output: FloatBuffer = FloatBuffer.allocate(192)
-      val helper = Helper()
-      helper.interpreter?.run(input, output)
+      interpreter?.run(input, output)
       promise.resolve(output.array().contentToString())
     } catch (e: Exception) {
       e.printStackTrace()

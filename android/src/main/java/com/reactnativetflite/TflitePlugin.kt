@@ -21,8 +21,7 @@ class TflitePlugin(name: String) : FrameProcessorPlugin(name) {
       val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, null)
       val input: ByteBuffer = Convert().convertBitmapToBuffer(bitmap)
       val output: FloatBuffer = FloatBuffer.allocate(192)
-      val helper = Helper()
-      helper.interpreter?.run(input, output)
+      interpreter?.run(input, output)
       val map = WritableNativeMap()
       map.putString("data", output.array().contentToString())
       return map
