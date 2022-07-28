@@ -1,6 +1,7 @@
 package com.reactnativetflite
 
 import android.graphics.*
+import android.util.Base64
 import androidx.camera.core.ImageProxy
 import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
@@ -50,5 +51,10 @@ class Convert {
 
   private fun byteArray2ByteBuffer(imageBytes: ByteArray): ByteBuffer? {
     return ByteBuffer.wrap(imageBytes)
+  }
+
+  fun base642Bitmap(imageString: String): Bitmap? {
+    val decodedString = Base64.decode(imageString, Base64.DEFAULT)
+    return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
   }
 }

@@ -2,6 +2,7 @@ package com.reactnativetflite
 
 import android.content.res.AssetManager
 import android.graphics.BitmapFactory
+import android.util.Base64
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -39,6 +40,20 @@ class TfliteModule(private val reactContext: ReactApplicationContext) :
   fun tensorImage(imagePath: String?, promise: Promise) {
     try {
       val bitmap = BitmapFactory.decodeFile(imagePath)
+      val input: ByteBuffer = Convert().bitmap2ByteBuffer(bitmap)
+      val output: FloatBuffer = FloatBuffer.allocate(192)
+      interpreter?.run(input, output)
+      promise.resolve(output.array().contentToString())
+    } catch (e: Exception) {
+      e.printStackTrace()
+      promise.reject(Throwable(e))
+    }
+  }
+
+  @ReactMethod
+  fun tensorBase64(imageString: String, promise: Promise) {
+    try {
+      val bitmap = Convert().base642Bitmap(imageString)
       val input: ByteBuffer = Convert().bitmap2ByteBuffer(bitmap)
       val output: FloatBuffer = FloatBuffer.allocate(192)
       interpreter?.run(input, output)

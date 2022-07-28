@@ -72,3 +72,7 @@ export function initTensor(
 export function tensorImage(imagePath?: string): Promise<any> {
   return TfliteModule.tensorImage(imagePath);
 }
+
+export function tensorBase64(imageString: string): Promise<any> {
+  return TfliteModule.tensorBase64(imageString);
+}
