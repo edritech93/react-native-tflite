@@ -18,9 +18,13 @@ RCT_EXTERN_METHOD(tensorImage:(NSString)imagePath
                   withResolver:(RCTPromiseResolveBlock)resolve
                   withRejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(tensorBase64:(NSString)imageString
+                  withResolver:(RCTPromiseResolveBlock)resolve
+                  withRejecter:(RCTPromiseRejectBlock)reject)
+
 + (BOOL)requiresMainQueueSetup
 {
-  return NO;
+    return NO;
 }
 
 @end
