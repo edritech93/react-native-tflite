@@ -12,14 +12,6 @@ import Accelerate
 import AVKit
 import Vision
 
-let batchSize = 1
-let inputChannels = 3
-let inputWidth = 112
-let inputHeight = 112
-
-// TensorFlow Lite `Interpreter` object for performing inference on a given model.
-var interpreter: Interpreter? = nil
-
 @objc(TfliteModule)
 class TfliteModule: NSObject {
 
@@ -33,13 +25,10 @@ class TfliteModule: NSObject {
             print("Failed to load the model file with name: \(modelName).")
             return
         }
-        // Specify the options for the `Interpreter`.
-        var options = Interpreter.Options()
-        options.threadCount = count
         do {
-            // Create the `Interpreter`.
+            var options = Interpreter.Options()
+            options.threadCount = count
             interpreter = try Interpreter(modelPath: modelPath, options: options)
-            // Allocate memory for the model's input `Tensor`s.
             try interpreter?.allocateTensors()
             resolve("initialization tflite success")
         } catch let error {
@@ -65,7 +54,6 @@ class TfliteModule: NSObject {
             }
             // Copy the RGB data to the input `Tensor`.
             try interpreter?.copy(rgbData, toInputAt: 0)
-
             // Run inference by invoking the `Interpreter`.
             try interpreter?.invoke()
             // Get the output `Tensor` to process the inference results.
@@ -79,97 +67,5 @@ class TfliteModule: NSObject {
         } catch let error {
             reject("Failed to invoke the interpreter with error: \(error.localizedDescription)", nil, nil)
         }
-    }
-
-    private func rgbDataFromBuffer(
-        _ buffer: CVPixelBuffer,
-        byteCount: Int,
-        isModelQuantized: Bool
-    ) -> Data? {
-        CVPixelBufferLockBaseAddress(buffer, .readOnly)
-        defer {
-            CVPixelBufferUnlockBaseAddress(buffer, .readOnly)
-        }
-        guard let sourceData = CVPixelBufferGetBaseAddress(buffer) else {
-            return nil
-        }
-
-        let width = CVPixelBufferGetWidth(buffer)
-        let height = CVPixelBufferGetHeight(buffer)
-        let sourceBytesPerRow = CVPixelBufferGetBytesPerRow(buffer)
-        let destinationChannelCount = 3
-        let destinationBytesPerRow = destinationChannelCount * width
-
-        var sourceBuffer = vImage_Buffer(data: sourceData,
-                                         height: vImagePixelCount(height),
-                                         width: vImagePixelCount(width),
-                                         rowBytes: sourceBytesPerRow)
-
-        guard let destinationData = malloc(height * destinationBytesPerRow) else {
-            print("Error: out of memory")
-            return nil
-        }
-
-        defer {
-            free(destinationData)
-        }
-
-        var destinationBuffer = vImage_Buffer(data: destinationData,
-                                              height: vImagePixelCount(height),
-                                              width: vImagePixelCount(width),
-                                              rowBytes: destinationBytesPerRow)
-
-        let pixelBufferFormat = CVPixelBufferGetPixelFormatType(buffer)
-
-        switch (pixelBufferFormat) {
-        case kCVPixelFormatType_32BGRA:
-            vImageConvert_BGRA8888toRGB888(&sourceBuffer, &destinationBuffer, UInt32(kvImageNoFlags))
-        case kCVPixelFormatType_32ARGB:
-            vImageConvert_ARGB8888toRGB888(&sourceBuffer, &destinationBuffer, UInt32(kvImageNoFlags))
-        case kCVPixelFormatType_32RGBA:
-            vImageConvert_RGBA8888toRGB888(&sourceBuffer, &destinationBuffer, UInt32(kvImageNoFlags))
-        default:
-            // Unknown pixel format.
-            return nil
-        }
-
-        let byteData = Data(bytes: destinationBuffer.data, count: destinationBuffer.rowBytes * height)
-        if isModelQuantized {
-            return byteData
-        }
-
-        // Not quantized, convert to floats
-        let bytes = Array<UInt8>(unsafeData: byteData)!
-        var floats = [Float]()
-        for i in 0..<bytes.count {
-            floats.append(Float(bytes[i]) / 255.0)
-        }
-        return Data(copyingBufferOf: floats)
-    }
-}
-
-// MARK: - Extensions
-
-extension Data {
-    // Creates a new buffer by copying the buffer pointer of the given array.
-    init<T>(copyingBufferOf array: [T]) {
-        self = array.withUnsafeBufferPointer(Data.init)
-    }
-}
-
-extension Array {
-    // Creates a new array from the bytes of the given unsafe data.
-    init?(unsafeData: Data) {
-        guard unsafeData.count % MemoryLayout<Element>.stride == 0 else { return nil }
-#if swift(>=5.0)
-        self = unsafeData.withUnsafeBytes { .init($0.bindMemory(to: Element.self)) }
-#else
-        self = unsafeData.withUnsafeBytes {
-            .init(UnsafeBufferPointer<Element>(
-                start: $0,
-                count: unsafeData.count / MemoryLayout<Element>.stride
-            ))
-        }
-#endif  // swift(>=5.0)
     }
 }

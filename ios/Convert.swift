@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-//import MLImage
 
 public func uiImageToPixelBuffer(image: UIImage, size: Int) -> CVPixelBuffer? {
   let attrs = [kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue, kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue] as CFDictionary
@@ -33,47 +32,25 @@ public func uiImageToPixelBuffer(image: UIImage, size: Int) -> CVPixelBuffer? {
   return pixelBuffer
 }
 
-//public func getImageFace(from sampleBuffer: CMSampleBuffer?, rectImage: CGRect) -> UIImage? {
-//  guard let sampleBuffer = sampleBuffer else {
-//    print("Sample buffer is NULL.")
-//    return nil
-//  }
-//  guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
-//    print("Invalid sample buffer.")
-//    return nil
-//  }
-//  let ciimage = CIImage(cvPixelBuffer: imageBuffer)
-//  let context = CIContext(options: nil)
-//  let cgImage = context.createCGImage(ciimage, from: ciimage.extent)!
-//  
-//  if (!rectImage.isNull) {
-//    let imageRef: CGImage = cgImage.cropping(to: rectImage)!
-//    let imageCrop: UIImage = UIImage(cgImage: imageRef, scale: 0.5, orientation: .right)
-//    return imageCrop
-//  } else {
-//    return nil
-//  }
-//}
-
 public func getImageFaceFromUIImage(from image: UIImage, rectImage: CGRect) -> UIImage? {
   let imageRef: CGImage = (image.cgImage?.cropping(to: rectImage)!)!
   let imageCrop: UIImage = UIImage(cgImage: imageRef, scale: 0.5, orientation: image.imageOrientation)
   return imageCrop
 }
 
-//public func getImageFromBuffer(from sampleBuffer: CMSampleBuffer?) -> UIImage? {
-//  guard let sampleBuffer = sampleBuffer else {
-//    print("Sample buffer is NULL.")
-//    return nil
-//  }
-//  guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
-//    print("Invalid sample buffer.")
-//    return nil
-//  }
-//  let ciimage = CIImage(cvPixelBuffer: imageBuffer)
-//  let context = CIContext(options: nil)
-//  let cgImage = context.createCGImage(ciimage, from: ciimage.extent)!
-//  
-//  let imageCrop: UIImage = UIImage(cgImage: cgImage, scale: 0.5, orientation: .right)
-//  return imageCrop
-//}
+public func SampleBuffer2UIImage(from sampleBuffer: CMSampleBuffer?) -> UIImage? {
+  guard let sampleBuffer = sampleBuffer else {
+    print("Sample buffer is NULL.")
+    return nil
+  }
+  guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+    print("Invalid sample buffer.")
+    return nil
+  }
+  let ciimage = CIImage(cvPixelBuffer: imageBuffer)
+  let context = CIContext(options: nil)
+  let cgImage = context.createCGImage(ciimage, from: ciimage.extent)!
+  
+  let imageCrop: UIImage = UIImage(cgImage: cgImage, scale: 0.5, orientation: .right)
+  return imageCrop
+}

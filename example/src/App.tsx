@@ -75,7 +75,7 @@ export default function App() {
       <Text
         style={styles.textResult}
         numberOfLines={1}
-      >{`Result: ${arrayTensor}`}</Text>
+      >{`Result: ${JSON.stringify(arrayTensor)}`}</Text>
       <View style={styles.wrapBottom}>
         <Button title={'Open Image'} onPress={_onOpenImage} />
         <Button title={'Open Camera'} onPress={_onOpenCamera} />
