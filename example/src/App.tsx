@@ -54,10 +54,10 @@ export default function App() {
     setIsCamera(true);
   };
 
-  const frameProcessor = useFrameProcessor((frame) => {
+  const frameProcessor = useFrameProcessor((frame: any) => {
     'worklet';
     const result = tflite(frame);
-    runOnJS(setArrayTensor)(result?.data);
+    runOnJS(setArrayTensor)(result);
   }, []);
 
   return (

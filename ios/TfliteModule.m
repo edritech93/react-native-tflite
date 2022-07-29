@@ -1,6 +1,13 @@
+//
+//  TfliteModule.m
+//  react-native-tflite
+//
+//  Created by Yudi Edri Alviska on 29/07/22.
+//
+
 #import <React/RCTBridgeModule.h>
 
-@interface RCT_EXTERN_MODULE(Tflite, NSObject)
+@interface RCT_EXTERN_MODULE(TfliteModule, NSObject)
 
 RCT_EXTERN_METHOD(initTensor:(NSString)modelName
                   withCount:(NSNumber)count

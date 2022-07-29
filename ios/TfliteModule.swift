@@ -1,6 +1,16 @@
+//
+//  TfliteModule.swift
+//  react-native-tflite
+//
+//  Created by Yudi Edri Alviska on 29/07/22.
+//
+
+import Foundation
 import UIKit
 import TensorFlowLite
 import Accelerate
+import AVKit
+import Vision
 
 let batchSize = 1
 let inputChannels = 3
@@ -10,8 +20,8 @@ let inputHeight = 112
 // TensorFlow Lite `Interpreter` object for performing inference on a given model.
 var interpreter: Interpreter? = nil
 
-@objc(Tflite)
-class Tflite: NSObject {
+@objc(TfliteModule)
+class TfliteModule: NSObject {
 
     @objc(initTensor:withCount:withResolver:withRejecter:)
     func initTensor(modelName: String, count: Int = 1, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
@@ -70,10 +80,6 @@ class Tflite: NSObject {
             reject("Failed to invoke the interpreter with error: \(error.localizedDescription)", nil, nil)
         }
     }
-
-    //  guard let imageBuffer = CMSampleBufferGetImageBuffer(frame.buffer) else {
-    //         return nil
-    //     }
 
     private func rgbDataFromBuffer(
         _ buffer: CVPixelBuffer,
