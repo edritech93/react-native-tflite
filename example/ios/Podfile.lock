@@ -335,7 +335,7 @@ PODS:
     - glog
   - react-native-image-picker (4.10.3):
     - React-Core
-  - react-native-tflite (1.0.0):
+  - react-native-tflite (1.1.0):
     - React-Core
     - TensorFlowLiteSwift
   - React-perflogger (0.71.7)
@@ -676,7 +676,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 9885f6f94d231b95a739ef7bb50536fb87ce7539
   React-logger: 3f8ebad1be1bf3299d1ab6d7f971802d7395c7ef
   react-native-image-picker: 60f4246eb5bb7187fc15638a8c1f13abd3820695
-  react-native-tflite: 1506785fd70e199296fe96a2ec64340643a78ccd
+  react-native-tflite: 75d067ed32d9271c82fe180b27da29509dd9bdca
   React-perflogger: 2d505bbe298e3b7bacdd9e542b15535be07220f6
   React-RCTActionSheet: 0e96e4560bd733c9b37efbf68f5b1a47615892fb
   React-RCTAnimation: fd138e26f120371c87e406745a27535e2c8a04ef
