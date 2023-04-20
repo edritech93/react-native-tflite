@@ -1,8 +1,9 @@
 const path = require('path');
+const pak = require('../package.json');
 
 module.exports = {
   dependencies: {
-    'react-native-tflite': {
+    [pak.name]: {
       root: path.join(__dirname, '..'),
     },
   },
