@@ -1,4 +1,4 @@
-package com.reactnativetflite
+package com.tflite
 
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule

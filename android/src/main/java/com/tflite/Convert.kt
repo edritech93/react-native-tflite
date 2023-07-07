@@ -1,4 +1,4 @@
-package com.reactnativetflite
+package com.tflite
 
 import android.graphics.*
 import android.util.Base64

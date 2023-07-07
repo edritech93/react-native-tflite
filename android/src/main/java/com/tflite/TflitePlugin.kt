@@ -1,4 +1,4 @@
-package com.reactnativetflite
+package com.tflite
 
 import android.annotation.SuppressLint
 import androidx.camera.core.ImageProxy

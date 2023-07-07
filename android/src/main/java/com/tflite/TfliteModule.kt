@@ -1,4 +1,4 @@
-package com.reactnativetflite
+package com.tflite
 
 import android.content.res.AssetManager
 import android.graphics.BitmapFactory
