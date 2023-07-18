@@ -491,11 +491,11 @@ PODS:
     - React-perflogger (= 0.72.1)
   - RNPermissions (3.8.3):
     - React-Core
-  - RNReanimated (2.17.0):
+  - RNReanimated (3.3.0):
     - DoubleConversion
     - FBLazyVector
-    - FBReactNativeSpec
     - glog
+    - hermes-engine
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -505,11 +505,13 @@ PODS:
     - React-Core/RCTWebSocket
     - React-CoreModules
     - React-cxxreact
+    - React-hermes
     - React-jsi
     - React-jsiexecutor
     - React-jsinspector
     - React-RCTActionSheet
     - React-RCTAnimation
+    - React-RCTAppDelegate
     - React-RCTBlob
     - React-RCTImage
     - React-RCTLinking
@@ -759,7 +761,7 @@ SPEC CHECKSUMS:
   React-utils: 0a70ea97d4e2749f336b450c082905be1d389435
   ReactCommon: e593d19c9e271a6da4d0bd7f13b28cfeae5d164b
   RNPermissions: d9db16f082ce2e09908e58c925189e2637d2786b
-  RNReanimated: 4ae06d380da4ea218da7b8be36746f2cc93021b0
+  RNReanimated: 9f7068e43b9358a46a688d94a5a3adb258139457
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: d3ec8883417a6a4a0e3a6ba37d81d22db7611601
   Yoga: 65286bb6a07edce5e4fe8c90774da977ae8fc009
