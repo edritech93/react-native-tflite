@@ -46,7 +46,7 @@
   },
   "homepage": "https://github.com/edritech93/react-native-tflite#readme",
   "publishConfig": {
-    "@edritech93:registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
     "@arkweid/lefthook": "^0.7.7",
