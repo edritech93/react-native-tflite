@@ -35,7 +35,10 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/edritech93/react-native-tflite",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edritech93/react-native-tflite.git"
+  },
   "author": "Yudi Edri Alviska <yudiedrialviska@gmail.com> (https://github.com/edritech93)",
   "license": "MIT",
   "bugs": {
@@ -43,7 +46,7 @@
   },
   "homepage": "https://github.com/edritech93/react-native-tflite#readme",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "@edritech93:registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
     "@arkweid/lefthook": "^0.7.7",
@@ -150,5 +153,9 @@
   },
   "dependencies": {
     "react-native-vision-camera": "^2.14.0"
+  },
+  "directories": {
+    "example": "example",
+    "lib": "lib"
   }
 }
