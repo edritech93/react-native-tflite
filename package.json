@@ -45,9 +45,6 @@
     "url": "https://github.com/edritech93/react-native-tflite/issues"
   },
   "homepage": "https://github.com/edritech93/react-native-tflite#readme",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "devDependencies": {
     "@arkweid/lefthook": "^0.7.7",
     "@babel/eslint-parser": "^7.18.2",
