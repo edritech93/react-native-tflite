@@ -690,7 +690,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: a283fefb8cc29d9740a7ff2e87f72ad10f25a433
   React-runtimeexecutor: 7902246857a4ead4166869e6c42d4df329ff721d
   ReactCommon: a6d1c76b9e10b439e41db225263341240e1cda9f
-  RNPermissions: 7a93fa28a7fea8dfac2987ffb89b21bd2fe01a6f
+  RNPermissions: f1b49dd05fa9b83993cd05a9ee115247944d8f1a
   RNReanimated: f186e85d9f28c9383d05ca39e11dd194f59093ec
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   TensorFlowLiteC: ac3334fa9dbc90e4744b4497312a393fd02b5408
