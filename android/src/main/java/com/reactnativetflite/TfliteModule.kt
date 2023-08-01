@@ -2,7 +2,6 @@ package com.reactnativetflite
 
 import android.content.res.AssetManager
 import android.graphics.BitmapFactory
-import android.util.Base64
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule

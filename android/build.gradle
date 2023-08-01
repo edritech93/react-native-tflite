@@ -133,7 +133,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"  // From node_modules
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'org.tensorflow:tensorflow-lite:+'
+  implementation 'org.tensorflow:tensorflow-lite:2.11.0'
   implementation 'org.tensorflow:tensorflow-lite-support:0.1.0'
   implementation "androidx.camera:camera-core:1.1.0-alpha06"
   implementation project(path: ':react-native-vision-camera')
