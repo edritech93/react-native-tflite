@@ -152,7 +152,7 @@
     ]
   },
   "dependencies": {
-    "react-native-vision-camera": "^2.14.0"
+    "react-native-vision-camera": "^2.15.4"
   },
   "directories": {
     "example": "example",
