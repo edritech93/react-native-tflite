@@ -1,4 +1,4 @@
-package com.reactnativetflite
+package com.tflite
 
 import org.tensorflow.lite.Interpreter
 

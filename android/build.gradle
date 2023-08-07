@@ -110,7 +110,6 @@ dependencies {
   implementation 'org.tensorflow:tensorflow-lite:2.11.0'
   implementation 'org.tensorflow:tensorflow-lite-support:0.1.0'
   implementation "androidx.camera:camera-core:1.1.0-alpha06"
-  implementation project(path: ':react-native-vision-camera')
 }
 
 if (isNewArchitectureEnabled()) {

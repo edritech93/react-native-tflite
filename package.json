@@ -164,8 +164,5 @@
     "name": "RNTfliteSpec",
     "type": "modules",
     "jsSrcsDir": "src"
-  },
-  "dependencies": {
-    "react-native-vision-camera": "^2.15.4"
   }
 }
