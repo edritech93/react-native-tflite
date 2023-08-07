@@ -1,6 +1,5 @@
 {
   "name": "TfliteExample",
-  "description": "Example app for react-native-tflite",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -11,11 +10,10 @@
   },
   "dependencies": {
     "react": "18.2.0",
-    "react-native": "0.71.12",
+    "react-native": "0.72.3",
     "react-native-image-picker": "^5.6.0",
     "react-native-permissions": "^3.8.4",
-    "react-native-reanimated": "^2.9.1",
-    "react-native-vision-camera": "^2.15.4"
+    "react-native-vision-camera": "^2.15.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -23,7 +21,7 @@
     "@babel/runtime": "^7.20.0",
     "@react-native/eslint-config": "^0.72.2",
     "@react-native/metro-config": "^0.72.9",
-    "metro-react-native-babel-preset": "0.73.10",
+    "metro-react-native-babel-preset": "0.76.7",
     "babel-plugin-module-resolver": "^5.0.0"
   },
   "engines": {

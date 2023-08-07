@@ -1,5 +1,7 @@
 # react-native-tflite
-tensorflow lite for react-native
+
+tensorflow for react-native
+
 ## Installation
 
 ```sh
@@ -8,12 +10,13 @@ npm install react-native-tflite
 
 ## Usage
 
+
 ```js
-import { multiply } from "react-native-tflite";
+import { multiply } from 'react-native-tflite';
 
 // ...
 
-const result = await multiply(3, 7);
+const result = multiply(3, 7);
 ```
 
 ## Contributing
