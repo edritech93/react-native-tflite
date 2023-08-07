@@ -21,7 +21,7 @@ class TfliteModule(reactContext: ReactApplicationContext) :
     return NAME
   }
 
-  override fun initTensor(modelPath: String?, count: Double?, promise: Promise?) {
+  override fun initTensor(modelPath: String?, count: Double, promise: Promise?) {
     try {
       if (modelPath === null) {
         throw Error("modelPath is required")
@@ -29,7 +29,7 @@ class TfliteModule(reactContext: ReactApplicationContext) :
       val assetManager = reactApplicationContext.assets
       val byteFile: MappedByteBuffer = loadModelFile(assetManager, modelPath)
       val options = Interpreter.Options()
-      options.numThreads = count as Int
+      options.numThreads = count.toInt()
       interpreter = Interpreter(byteFile, options)
       interpreter?.allocateTensors()
       promise?.resolve("initialization tflite success")

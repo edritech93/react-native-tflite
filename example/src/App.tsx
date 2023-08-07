@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Button, LogBox } from 'react-native';
-import { getPermissionReadStorage } from './permission';
-import { initTensor, tensorImage } from 'react-native-tflite';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { initTensor, tensorImage } from 'react-native-tflite';
+import { getPermissionReadStorage } from './permission';
 
 LogBox.ignoreAllLogs();
 
@@ -51,17 +51,15 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 16,
     backgroundColor: 'white',
   },
-  wrapCamera: {
-    flex: 1,
-  },
   textResult: {
+    flex: 1,
     color: 'black',
   },
   wrapBottom: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 16,
   },
 });
