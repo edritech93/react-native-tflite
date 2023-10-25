@@ -1,6 +1,6 @@
 # react-native-tflite
 
-tensorflow for react-native
+tflite for react-native
 
 ## Installation
 

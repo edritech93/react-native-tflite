@@ -13,11 +13,5 @@ module.exports = {
         },
       },
     ],
-    [
-      'react-native-reanimated/plugin',
-      {
-        globals: ['__tflite'],
-      },
-    ],
   ],
 };

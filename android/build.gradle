@@ -21,9 +21,6 @@ def isNewArchitectureEnabled() {
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 
-
-def appProject = rootProject.allprojects.find { it.plugins.hasPlugin('com.android.application') }
-
 if (isNewArchitectureEnabled()) {
   apply plugin: "com.facebook.react"
 }
@@ -36,14 +33,24 @@ def getExtOrIntegerDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["Tflite_" + name]).toInteger()
 }
 
-def isAGPVersionGreaterThan(version) {
-  def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0].toInteger()
-  return agpVersion > version
+def supportsNamespace() {
+  def parsed = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')
+  def major = parsed[0].toInteger()
+  def minor = parsed[1].toInteger()
+
+  // Namespace support was added in 7.3.0
+  return (major == 7 && minor >= 3) || major >= 8
 }
 
 android {
-  if (isAGPVersionGreaterThan(7)) {
+  if (supportsNamespace()) {
     namespace "com.tflite"
+
+    sourceSets {
+      main {
+        manifest.srcFile "src/main/AndroidManifestNew.xml"
+      }
+    }
   }
 
   compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
@@ -51,8 +58,9 @@ android {
   defaultConfig {
     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
-    buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+
   }
+
   buildTypes {
     release {
       minifyEnabled false
@@ -67,7 +75,6 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
-
 }
 
 repositories {
@@ -88,10 +95,3 @@ dependencies {
   implementation "androidx.camera:camera-core:1.3.0-alpha06"
 }
 
-if (isNewArchitectureEnabled()) {
-  react {
-    jsRootDir = file("../src/")
-    libraryName = "Tflite"
-    codegenJavaPackageName = "com.tflite"
-  }
-}

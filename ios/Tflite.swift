@@ -1,10 +1,3 @@
-//
-//  TfliteModule.swift
-//  react-native-tflite
-//
-//  Created by Yudi Edri Alviska on 29/07/22.
-//
-
 import Foundation
 import UIKit
 import TensorFlowLite
@@ -12,8 +5,8 @@ import Accelerate
 import AVKit
 import Vision
 
-@objc(TfliteModule)
-class TfliteModule: NSObject {
+@objc(Tflite)
+class Tflite: NSObject {
     
     @objc(initTensor:withCount:withResolver:withRejecter:)
     func initTensor(modelName: String, count: Int = 1, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
@@ -35,37 +28,6 @@ class TfliteModule: NSObject {
             print("Failed to create the interpreter with error: \(error.localizedDescription)")
             reject("Error", "tflite error", error)
             return
-        }
-    }
-    
-    @objc(tensorImage:withResolver:withRejecter:)
-    func tensorImage(imagePath: String, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
-        let pixelBuffer = uiImageToPixelBuffer(image: UIImage.init(contentsOfFile: imagePath)!, size: inputWidth)
-        do {
-            let inputTensor = try interpreter?.input(at: 0)
-            // Remove the alpha component from the image buffer to get the RGB data.
-            guard let rgbData = rgbDataFromBuffer(
-                pixelBuffer!,
-                byteCount: batchSize * inputWidth * inputHeight * inputChannels,
-                isModelQuantized: inputTensor?.dataType == .uInt8
-            ) else {
-                reject("Failed to convert the image buffer to RGB data.", nil, nil)
-                return
-            }
-            // Copy the RGB data to the input `Tensor`.
-            try interpreter?.copy(rgbData, toInputAt: 0)
-            // Run inference by invoking the `Interpreter`.
-            try interpreter?.invoke()
-            // Get the output `Tensor` to process the inference results.
-            let outputTensor: Tensor? = try interpreter?.output(at: 0)
-            if ((outputTensor?.data) != nil) {
-                let result: [Float] = [Float32](unsafeData: outputTensor!.data) ?? []
-                resolve(result)
-            } else {
-                resolve([])
-            }
-        } catch let error {
-            reject("Failed to invoke the interpreter with error: \(error.localizedDescription)", nil, nil)
         }
     }
     

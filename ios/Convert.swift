@@ -1,10 +1,3 @@
-//
-//  Convert.swift
-//  iosTensorflowLite
-//
-//  Created by Yudi Edri Alviska on 06/08/21.
-//
-
 import Foundation
 import UIKit
 
@@ -35,22 +28,5 @@ public func uiImageToPixelBuffer(image: UIImage, size: Int) -> CVPixelBuffer? {
 public func getImageFaceFromUIImage(from image: UIImage, rectImage: CGRect) -> UIImage? {
     let imageRef: CGImage = (image.cgImage?.cropping(to: rectImage)!)!
     let imageCrop: UIImage = UIImage(cgImage: imageRef, scale: 0.5, orientation: image.imageOrientation)
-    return imageCrop
-}
-
-public func SampleBuffer2UIImage(from sampleBuffer: CMSampleBuffer?) -> UIImage? {
-    guard let sampleBuffer = sampleBuffer else {
-        print("Sample buffer is NULL.")
-        return nil
-    }
-    guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
-        print("Invalid sample buffer.")
-        return nil
-    }
-    let ciimage = CIImage(cvPixelBuffer: imageBuffer)
-    let context = CIContext(options: nil)
-    let cgImage = context.createCGImage(ciimage, from: ciimage.extent)!
-    
-    let imageCrop: UIImage = UIImage(cgImage: cgImage, scale: 0.5, orientation: .right)
     return imageCrop
 }
