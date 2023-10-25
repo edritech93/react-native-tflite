@@ -7,6 +7,7 @@ import {
   LogBox,
   ScrollView,
   SafeAreaView,
+  Platform,
 } from 'react-native';
 import { initTensor, tensorBase64 } from 'react-native-tflite';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -15,7 +16,7 @@ import { getPermissionReadStorage } from './permission';
 LogBox.ignoreAllLogs();
 
 export default function App() {
-  const [arrayTensor, setArrayTensor] = useState([]);
+  const [arrayTensor, setArrayTensor] = useState<number[]>([]);
 
   useEffect(() => {
     initTensor('mobile_face_net', 1)
@@ -39,7 +40,15 @@ export default function App() {
       result.assets[0]?.uri
     ) {
       tensorBase64(result.assets[0].base64 || '')
-        .then((response) => setArrayTensor(response))
+        .then((response) => {
+          const objRes: number[] =
+            Platform.OS === 'android' ? JSON.parse(response) : response;
+          const arrayRes: number[] = objRes.map((e: number) => {
+            const stringFixed: string = e.toFixed(5);
+            return parseFloat(stringFixed);
+          });
+          setArrayTensor(arrayRes);
+        })
         .catch((error) => console.log('error tensorImage =>', error));
     }
   };

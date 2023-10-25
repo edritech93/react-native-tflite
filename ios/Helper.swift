@@ -6,7 +6,7 @@ import AVKit
 import Vision
 
 let batchSize = 1
-let inputChannels = 3
+let inputChannels = 1
 let inputWidth = 112
 let inputHeight = 112
 
