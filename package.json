@@ -39,7 +39,10 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/edritech93/react-native-tflite",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edritech93/react-native-tflite.git"
+  },
   "author": "Yudi Edri Alviska <yudiedrialviska@gmail.com> (https://github.com/edritech93)",
   "license": "MIT",
   "bugs": {
